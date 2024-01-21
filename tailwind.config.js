@@ -1,10 +1,15 @@
-import preset from './vendor/filament/support/tailwind.config.preset'
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 export default {
-    presets: [preset],
     content: [
         './resources/views/**/*.blade.php',
+        './node_modules/flowbite/**/*.js',
+        './resources/**/*.js',
+        './resources/**/*.vue',
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+    ],
+    plugins: [
+        require('flowbite/plugin')
     ],
     theme: {
         fontFamily: {
