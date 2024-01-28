@@ -16,4 +16,12 @@ enum Store: string
             self::Procord => 'blue',
         };
     }
+
+    public function language(): int
+    {
+        return match ($this) {
+            self::Wildbear => 1,
+            self::Procord => 2,
+        };
+    }
 }
