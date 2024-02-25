@@ -13,8 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', static function () {
     return view('welcome');
 });
 
 Route::prefix('clients')->group(__DIR__ . '/clients.php');
+Route::prefix('requests')->group(__DIR__ . '/requests.php');
