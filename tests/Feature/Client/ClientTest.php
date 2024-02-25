@@ -6,6 +6,10 @@ use App\Enums\Store;
 use Database\Factories\ClientContactFactory;
 use Database\Factories\ClientFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Client\Data\ClientData;
+use Modules\Client\Data\ContactsData;
+use Modules\Client\Enums\ContactType;
+use Modules\Client\Services\ClientCreateService;
 use Tests\TestCase;
 
 class ClientTest extends TestCase
@@ -100,6 +104,31 @@ class ClientTest extends TestCase
         $this->assertDatabaseMissing('client_contacts', [
             'client_id' => $client->id,
             'value' => $contact->value,
+        ]);
+    }
+
+    public function test_client_service(): void
+    {
+        $clientCreateService = $this->app->make(ClientCreateService::class);
+
+        $clientData = new ClientData(
+            name: 'Test',
+            address: 'street 12',
+            comment: 'Cool client',
+            isBad: false,
+            store: Store::Wildbear,
+            contacts: [
+                new ContactsData(
+                    type: ContactType::Phone,
+                    value: '380931112233'
+                ),
+            ]
+        );
+
+        $clientCreateService($clientData);
+
+        $this->assertDatabaseHas('clients', [
+            'name' => 'Test',
         ]);
     }
 }
