@@ -12,9 +12,29 @@ trait ObjectArray
     {
         $objectVars = get_object_vars($this);
 
-        return array_combine(
-            array_map(static fn($value) => Str::snake($value), array_keys($objectVars)),
-            array_values($objectVars)
-        );
+        $stack = new \SplStack();
+        $stack->push($objectVars);
+
+        $result = [];
+
+        while (!$stack->isEmpty()) {
+            $current = $stack->pop();
+
+            foreach ($current as $key => $value) {
+                if (is_string($key)) {
+                    $key = Str::snake($key);
+                }
+
+                if (is_array($value)) {
+                    $stack->push($value);
+                } elseif (is_object($value)) {
+                    $result[$key] = $value->toArray();
+                } else {
+                    $result[$key] = $value;
+                }
+            }
+        }
+
+        return $result;
     }
 }
