@@ -3,6 +3,7 @@
 namespace Tests\Unit\Support;
 
 use App\Support\Traits\ObjectArray;
+use Illuminate\Contracts\Support\Arrayable;
 use PHPUnit\Framework\TestCase;
 
 class ObjectArrayTest extends TestCase
@@ -24,7 +25,7 @@ class ObjectArrayTest extends TestCase
 
     public function test_nested_objects(): void
     {
-        $object = new class () {
+        $object = new class () implements Arrayable {
             use ObjectArray;
 
             public array $products;
@@ -32,12 +33,12 @@ class ObjectArrayTest extends TestCase
             public function __construct()
             {
                 $this->products = [
-                    new class () {
+                    new class () implements Arrayable {
                         use ObjectArray;
 
                         public float $price = 5;
                     },
-                    new class () {
+                    new class () implements Arrayable {
                         use ObjectArray;
 
                         public float $price = 10;
@@ -48,6 +49,6 @@ class ObjectArrayTest extends TestCase
 
         $resultArray = $object->toArray();
 
-        $this->assertEquals([['price' => 5], ['price' => 10]], $resultArray);
+        $this->assertEquals(['products' => [['price' => 5], ['price' => 10]]], $resultArray);
     }
 }
