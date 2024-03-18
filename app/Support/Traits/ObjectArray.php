@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Support\Traits;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
 
 trait ObjectArray
@@ -16,6 +17,7 @@ trait ObjectArray
         $stack->push($objectVars);
 
         $result = [];
+        $tmpKey = '';
 
         while (!$stack->isEmpty()) {
             $current = $stack->pop();
@@ -27,8 +29,13 @@ trait ObjectArray
 
                 if (is_array($value)) {
                     $stack->push($value);
-                } elseif (is_object($value)) {
-                    $result[$key] = $value->toArray();
+                    $tmpKey = $key;
+                } elseif ($value instanceof Arrayable) {
+                    if ($tmpKey) {
+                        $result[$tmpKey][] = $value->toArray();
+                    } else {
+                        $result[$key] = $value->toArray();
+                    }
                 } else {
                     $result[$key] = $value;
                 }
