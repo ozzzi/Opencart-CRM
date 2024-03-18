@@ -56,22 +56,24 @@ class OrderService
             });
     }
 
-    private function importOrder(object $order, ExternalOrderRepository $externalOrderRepository, Store $store): Order
+    private function importOrder(object $order, ExternalOrderRepository $externalOrderRepository, Store $store): ?Order
     {
         $products = $externalOrderRepository->products($order->order_id);
+
         $productData = [];
 
-        foreach ($products as $product) {
-            $productData[] = new OrderProductData(
-                orderId: (int) $order->order_id,
-                productId: (int) $product->product_id,
-                name: $product->name,
-                model: $product->model,
-                quantity: (int) $product->quantity,
-                price: (float) $product->price
-            );
+        if ($products->count()) {
+            foreach ($products as $product) {
+                $productData[] = new OrderProductData(
+                    orderId: (int) $order->order_id,
+                    productId: (int) $product->product_id,
+                    name: $product->name,
+                    model: $product->model,
+                    quantity: (int) $product->quantity,
+                    price: (float) $product->price
+                );
+            }
         }
-
         $orderStatusId = $externalOrderRepository->statusId($order->order_id);
 
         $clientName = sprintf('%s %s', $order->firstname, $order->lastname);

@@ -20,9 +20,12 @@ class OrderRepository
 
         try {
             $dataArray = $data->toArray();
-            $productsArray = $dataArray['products'];
+            $productsArray = [];
 
-            unset($dataArray['products']);
+            if (isset($dataArray['products'])) {
+                $productsArray = $dataArray['products'];
+                unset($dataArray['products']);
+            }
 
             $order = Order::query()->create($dataArray);
             $order->products()->createMany($productsArray);
