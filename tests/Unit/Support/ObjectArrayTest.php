@@ -36,19 +36,27 @@ class ObjectArrayTest extends TestCase
                     new class () implements Arrayable {
                         use ObjectArray;
 
-                        public float $price = 5;
-                    },
-                    new class () implements Arrayable {
-                        use ObjectArray;
+                        public array $options;
 
-                        public float $price = 10;
-                    }
+                        public float $price = 5;
+
+                        public function __construct()
+                        {
+                            $this->options = [
+                                new class () implements Arrayable {
+                                    use ObjectArray;
+
+                                    public string $color = 'red';
+                                }
+                            ];
+                        }
+                    },
                 ];
             }
         };
 
         $resultArray = $object->toArray();
 
-        $this->assertEquals(['products' => [['price' => 5], ['price' => 10]]], $resultArray);
+        $this->assertEquals(['products' => [['price' => 5, 'options' => [['color' => 'red']]]]], $resultArray);
     }
 }
