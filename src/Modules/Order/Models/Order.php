@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\OrderStatus\Models\OrderStatus;
 
 /**
  * @property int $id
@@ -28,6 +30,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $status_id
  * @property string $date_added
  * @property-read Collection<OrderProduct> $products
+ * @property-read OrderStatus $status
  */
 class Order extends Model
 {
@@ -69,5 +72,10 @@ class Order extends Model
     public function products(): HasMany
     {
         return $this->hasMany(OrderProduct::class);
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(OrderStatus::class, 'status_id', 'external_id');
     }
 }

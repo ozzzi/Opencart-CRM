@@ -31,6 +31,15 @@ class ExternalOrderRepository
             ->get();
     }
 
+    public function productOptions(int $orderId, int $orderProductId): Collection
+    {
+        return DB::connection($this->store->value)
+            ->table('order_option')
+            ->where('order_id', $orderId)
+            ->where('order_product_id', $orderProductId)
+            ->get();
+    }
+
     public function statusId(int $orderId): int
     {
         return (int) DB::connection($this->store->value)

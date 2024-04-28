@@ -19,3 +19,4 @@ Route::get('/', static function () {
 
 Route::prefix('clients')->group(__DIR__ . '/clients.php');
 Route::prefix('requests')->group(__DIR__ . '/requests.php');
+Route::prefix('orders')->group(__DIR__ . '/orders.php');

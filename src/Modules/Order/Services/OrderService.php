@@ -11,6 +11,7 @@ use Modules\Client\Enums\ContactType;
 use Modules\Client\Services\ClientCreateService;
 use Modules\Order\Data\OrderData;
 use Modules\Order\Data\OrderProductData;
+use Modules\Order\Data\OrderProductOptionData;
 use Modules\Order\Models\Order;
 use Modules\Order\Repositories\ExternalOrderRepository;
 use Modules\Order\Repositories\OrderRepository;
@@ -64,13 +65,26 @@ class OrderService
 
         if ($products->count()) {
             foreach ($products as $product) {
+                $productOptions = [];
+                $options = $externalOrderRepository->productOptions($order->order_id, $product->order_product_id);
+
+                foreach ($options as $option) {
+                    $productOptions[] = new OrderProductOptionData(
+                        orderProductId: (int) $option->order_product_id,
+                        name: $option->name,
+                        value: $option->value
+                    );
+                }
+
                 $productData[] = new OrderProductData(
                     orderId: (int) $order->order_id,
                     productId: (int) $product->product_id,
                     name: $product->name,
                     model: $product->model,
                     quantity: (int) $product->quantity,
-                    price: (float) $product->price
+                    price: (float) $product->price,
+                    total: (float) $product->total,
+                    options: $productOptions
                 );
             }
         }

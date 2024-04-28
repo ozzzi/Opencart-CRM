@@ -44,7 +44,18 @@ return new class () extends Migration {
             $table->string('model');
             $table->integer('quantity');
             $table->decimal('price', 15, 2);
+            $table->decimal('total', 15, 2);
             $table->timestamps();
+        });
+
+        Schema::create('order_product_options', static function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('order_product_id')
+                ->constrained();
+
+            $table->string('name');
+            $table->string('value');
         });
     }
 
@@ -54,6 +65,7 @@ return new class () extends Migration {
     public function down(): void
     {
         if (!app()->isProduction()) {
+            Schema::dropIfExists('order_product_options');
             Schema::dropIfExists('order_products');
             Schema::dropIfExists('orders');
         }

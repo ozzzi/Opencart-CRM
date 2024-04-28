@@ -43,7 +43,11 @@
                                 <td class="px-6 py-4">
                                     <x-badge type="{{ $request->storeColor }}">{{ $request->store->value }}</x-badge>
                                 </td>
-                                <td class="px-6 py-4">{{ $request->order_id }}</td>
+                                <td class="px-6 py-4">
+                                    @if($request->order_id)
+                                        <a href="{{ route('orders.show', $request->order_id) }}">{{ $request->order_id }}</a>
+                                    @endif
+                                </td>
                                 <td class="px-6 py-4">{{ $request->status->name }}</td>
                                 <td class="px-6 py-4">{{ $request->name }}</td>
                                 <td class="px-6 py-4">{{ $request->phone }}</td>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Order\Repositories;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Modules\Order\Data\OrderData;
 use Modules\Order\Models\Order;
@@ -11,6 +12,20 @@ use Throwable;
 
 class OrderRepository
 {
+    public function list(): LengthAwarePaginator
+    {
+        return Order::query()
+            ->with(['status'])
+            ->paginate();
+    }
+
+    public function show(int $id): Order
+    {
+        return Order::query()
+            ->with(['products', 'products.options'])
+            ->findOrFail($id);
+    }
+
     /**
      * @throws Throwable
      */
@@ -28,7 +43,21 @@ class OrderRepository
             }
 
             $order = Order::query()->create($dataArray);
-            $order->products()->createMany($productsArray);
+
+            $optionsArray = [];
+
+            foreach ($productsArray as $productData) {
+                if (isset($productData['options'])) {
+                    $optionsArray = $productData['options'];
+                    unset($productData['options']);
+                }
+
+                $orderProduct = $order->products()->create($productData);
+
+                if (count($optionsArray)) {
+                    $orderProduct->options()->createMany($optionsArray);
+                }
+            }
 
             DB::commit();
         } catch (Throwable $e) {

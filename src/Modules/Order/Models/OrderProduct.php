@@ -6,6 +6,7 @@ namespace Modules\Order\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $sku
  * @property int $quantity
  * @property float $price
+ * @property float $total
  */
 class OrderProduct extends Model
 {
@@ -29,5 +31,14 @@ class OrderProduct extends Model
         'sku',
         'quantity',
         'price',
+        'total',
     ];
+
+    /**
+     * @return HasMany<OrderProductOption>
+     */
+    public function options(): HasMany
+    {
+        return $this->hasMany(OrderProductOption::class);
+    }
 }
