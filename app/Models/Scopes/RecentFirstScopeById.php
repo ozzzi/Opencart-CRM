@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-class RecentFirstScope implements Scope
+class RecentFirstScopeById implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
