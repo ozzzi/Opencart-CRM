@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Request\Model;
 
 use App\Enums\Store;
-use App\Models\Scopes\RecentFirstScopeById;
+use App\Models\Scopes\RecentByDateAdded;
 use App\Support\Traits\StoreColor;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,11 +23,12 @@ use Modules\OrderStatus\Models\OrderStatus;
  * @property ?string $phone
  * @property ?string $comment
  * @property Store $store
+ * @property string $date_added
  * @property-read OrderStatus $status
  * @property-read Client $client
  * @property-read string $storeColor
  */
-#[ScopedBy([RecentFirstScopeById::class])]
+#[ScopedBy([RecentByDateAdded::class])]
 class Request extends Model
 {
     use HasFactory;
@@ -40,7 +41,8 @@ class Request extends Model
         'name',
         'phone',
         'comment',
-        'store'
+        'store',
+        'date_added',
     ];
 
     protected $casts = [

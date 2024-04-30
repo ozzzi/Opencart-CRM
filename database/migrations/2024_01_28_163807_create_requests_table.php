@@ -19,10 +19,12 @@ return new class () extends Migration {
             $table->string('phone')->nullable();
             $table->text('comment')->nullable();
             $table->string('store');
+            $table->dateTime('date_added');
             $table->timestamps();
 
             $table->index(['order_id', 'store']);
             $table->index(['client_id', 'store']);
+            $table->index('date_added');
         });
     }
 

@@ -52,6 +52,7 @@ class OrderService
                         phone: $orderCreated->phone,
                         comment: $orderCreated->comment,
                         store: $store,
+                        dateAdded: $order->date_added
                     )
                 );
             });

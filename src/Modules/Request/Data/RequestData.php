@@ -18,7 +18,8 @@ class RequestData
         public readonly string $name,
         public readonly ?string $phone,
         public readonly ?string $comment,
-        public readonly Store $store
+        public readonly Store $store,
+        public readonly string $dateAdded
     ) {
     }
 }
