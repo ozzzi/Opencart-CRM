@@ -26,6 +26,14 @@ class OrderRepository
             ->findOrFail($id);
     }
 
+    public function showByOrderId(int $orderId): Order
+    {
+        return Order::query()
+            ->with(['products', 'products.options'])
+            ->where('order_id', $orderId)
+            ->firstOrFail();
+    }
+
     /**
      * @throws Throwable
      */

@@ -25,4 +25,11 @@ class OrderController extends Controller
 
         return view('order.show', compact('order'));
     }
+
+    public function showByOrderId(int $orderId): View
+    {
+        $order = $this->orderRepository->showByOrderId($orderId);
+
+        return view('order.show', compact('order'));
+    }
 }

@@ -9,4 +9,5 @@ Route::controller(OrderController::class)
     ->group(static function () {
         Route::get('', 'index')->name('index');
         Route::get('{order}', 'show')->name('show');
+        Route::get('{order}/order_id', 'showByOrderId')->name('show_order_id');
     });
