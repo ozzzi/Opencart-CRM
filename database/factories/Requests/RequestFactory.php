@@ -30,7 +30,8 @@ class RequestFactory extends Factory
             'name' => fake()->name,
             'phone' => fake()->phoneNumber,
             'comment' => fake()->text,
-            'store' => Store::Wildbear
+            'store' => Store::Wildbear,
+            'date_added' => now(),
         ];
     }
 }
