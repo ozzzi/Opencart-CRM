@@ -16,8 +16,14 @@
         </nav>
     </div>
 
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+
     <x-form action="{{ route('requests.update', $request->id) }}" method="put">
-        <div class="grid grid-cols-2 gap-6">
+        <div class="grid grid-cols-2 gap-6 sm:grid-cols-2">
             <div class="flex flex-col gap-9">
                 <div class="rounded-sm border border-stroke bg-white shadow-default py-4 px-6.5">
                     <x-inputs.input
@@ -50,6 +56,40 @@
                     />
 
                     <x-buttons.button type="submit" color="blue">{{ __('actions.save') }}</x-buttons.button>
+                </div>
+            </div>
+            <div class="flex flex-col gap-9">
+                <div class="rounded-sm border border-stroke bg-white shadow-default">
+                    <div class="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+                        <h3 class="font-medium text-black dark:text-white">
+                            {{ __('shipment.ttn') }}
+                        </h3>
+                    </div>
+                    <div class="flex flex-col gap-5.5 p-6.5">
+                        <div class="flex gap-2">
+                            <div class="flex-none">
+                                <x-inputs.select
+                                    name="shipment[type]"
+                                    placeholder="{{ __('shipment.title') }}"
+                                    :isLabel="true"
+                                    :options="$shipments"
+                                    :value="$trackingType"
+                                />
+                            </div>
+                            <div class="grow">
+                                <label for="input-number" class="block mb-2 text-sm font-medium text-gray-900">
+                                    {{ __('shipment.number') }}
+                                </label>
+                                <input type="text"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" name="shipment[number]" placeholder="{{ __('shipment.number') }}"
+                                       value="{{ $trackingNumber }}"
+                                       id="input-number">
+                                @error('shipment.number')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

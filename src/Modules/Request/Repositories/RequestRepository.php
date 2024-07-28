@@ -13,7 +13,7 @@ class RequestRepository
     public function list(): LengthAwarePaginator
     {
         return Request::query()
-            ->with(['status'])
+            ->with(['status', 'tracking'])
             ->paginate();
     }
 

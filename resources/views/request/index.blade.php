@@ -28,6 +28,7 @@
                         <tr>
                             <th scope="col" class="px-6 py-3">id</th>
                             <th scope="col" class="px-6 py-3">{{ __('fields.store') }}</th>
+                            <th scope="col" class="py-3"></th>
                             <th scope="col" class="px-6 py-3">{{ __('fields.order') }}</th>
                             <th scope="col" class="px-6 py-3">{{ __('fields.status') }}</th>
                             <th scope="col" class="px-6 py-3">{{ __('fields.name') }}</th>
@@ -42,6 +43,13 @@
                                 <td class="px-6 py-4">{{ $request->id }}</td>
                                 <td class="px-6 py-4">
                                     <x-badge type="{{ $request->storeColor }}">{{ $request->store->value }}</x-badge>
+                                </td>
+                                <td class="py-4">
+                                    @if($request->tracking)
+                                        <span class="bg-{{ $request->tracking->color }}-600 text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">
+                                            {{ $request->tracking->title }}
+                                        </span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4">
                                     @if($request->order_id)

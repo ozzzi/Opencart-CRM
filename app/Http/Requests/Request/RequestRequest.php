@@ -6,6 +6,7 @@ use App\Enums\Store;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Modules\Shipment\Enums\Shipment;
 
 class RequestRequest extends FormRequest
 {
@@ -32,6 +33,9 @@ class RequestRequest extends FormRequest
             'phone' => ['nullable', 'min:10'],
             'comment' => ['nullable'],
             'store' => ['required', Rule::enum(Store::class)],
+            'shipment' => ['nullable', 'array:type,number'],
+            'shipment.type' => ['nullable', Rule::enum(Shipment::class)],
+            'shipment.number' => ['required_with:shipment.type'],
         ];
     }
 
