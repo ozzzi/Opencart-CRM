@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use InvalidArgumentException;
 use Modules\Client\Enums\ContactType;
 
 /**
@@ -38,7 +39,10 @@ class ClientContact extends Model
         return Attribute::make(
             set: function ($value) {
                 if ($this->type === ContactType::Phone) {
-                    return preg_replace('/\D/', '', $value);
+                    try {
+                        $value = phoneNormalise($value);
+                    } catch (InvalidArgumentException) {
+                    }
                 }
 
                 return $value;

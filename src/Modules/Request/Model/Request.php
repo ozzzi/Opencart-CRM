@@ -8,9 +8,11 @@ use App\Enums\Store;
 use App\Models\Scopes\RecentByDateAdded;
 use App\Support\Traits\StoreColor;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use InvalidArgumentException;
 use Modules\Client\Models\Client;
 use Modules\OrderStatus\Models\OrderStatus;
 
@@ -48,6 +50,21 @@ class Request extends Model
     protected $casts = [
         'store' => Store::class,
     ];
+
+    public function phone(): Attribute
+    {
+        return Attribute::make(
+            set: static function ($value) {
+                try {
+                    $phone = phoneNormalise($value);
+                } catch (InvalidArgumentException) {
+                    $phone = $value;
+                }
+
+                return $phone;
+            }
+        );
+    }
 
     public function client(): BelongsTo
     {
