@@ -10,3 +10,24 @@ if (!function_exists('flash')) {
         return app(Flash::class);
     }
 }
+
+if (!function_exists('phoneNormalise')) {
+    function phoneNormalise(string $phone): string
+    {
+        $phone = preg_replace('/\D/', '', $phone);
+
+        if (strlen($phone) < 10 || strlen($phone) > 12 || strlen($phone) === 11) {
+            throw new InvalidArgumentException('Invalid phone length');
+        }
+
+        if (strlen($phone) === 10) {
+            $phone = '38' . $phone;
+        }
+
+        if (!str_starts_with($phone, '38')) {
+            throw new InvalidArgumentException('Foreign phone number');
+        }
+
+        return $phone;
+    }
+}
