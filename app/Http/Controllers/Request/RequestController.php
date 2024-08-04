@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Request;
 use App\Enums\Store;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Request\RequestRequest;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Modules\Client\Data\ClientData;
@@ -70,7 +71,8 @@ class RequestController extends Controller
             name: $data['name'],
             phone: $data['phone'] ?? null,
             comment: $data['comment'] ?? null,
-            store: Store::from($data['store'])
+            store: Store::from($data['store']),
+            dateAdded: Carbon::now()
         ));
 
         flash()->success(__('request.created'));
