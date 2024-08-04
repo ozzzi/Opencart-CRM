@@ -16,12 +16,16 @@ if (!function_exists('phoneNormalise')) {
     {
         $phone = preg_replace('/\D/', '', $phone);
 
-        if (strlen($phone) < 10 || strlen($phone) > 12 || strlen($phone) === 11) {
+        if (strlen($phone) < 10 || strlen($phone) > 12) {
             throw new InvalidArgumentException('Invalid phone length');
         }
 
         if (strlen($phone) === 10) {
             $phone = '38' . $phone;
+        }
+
+        if (strlen($phone) === 11) {
+            $phone = '3' . $phone;
         }
 
         if (!str_starts_with($phone, '38')) {
