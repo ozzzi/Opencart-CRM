@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Modules\Shipment\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Request\Model\Request;
 use Modules\Shipment\Enums\Shipment;
+use Modules\Shipment\Models\Builders\TrackingBuilder;
 
 /**
  * @property int $id
@@ -19,6 +23,8 @@ use Modules\Shipment\Enums\Shipment;
  * @property bool $expired
  * @property-read string $color
  * @property-read string $title
+ * @property-read Request $request
+ * @method Builder new()
  */
 class Tracking extends Model
 {
@@ -56,5 +62,15 @@ class Tracking extends Model
                 };
             }
         );
+    }
+
+    public function request(): BelongsTo
+    {
+        return $this->belongsTo(Request::class);
+    }
+
+    public function newEloquentBuilder($query): TrackingBuilder
+    {
+        return new TrackingBuilder($query);
     }
 }
