@@ -8,13 +8,13 @@ use App\Enums\Store;
 use App\Models\Scopes\RecentByDateAdded;
 use App\Support\Traits\StoreColor;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use InvalidArgumentException;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Client\Models\Client;
 use Modules\OrderStatus\Models\OrderStatus;
+use Modules\Shipment\Models\Tracking;
 
 /**
  * @property int $id
@@ -29,6 +29,7 @@ use Modules\OrderStatus\Models\OrderStatus;
  * @property-read OrderStatus $status
  * @property-read Client $client
  * @property-read string $storeColor
+ * @property-read Tracking $tracking
  */
 #[ScopedBy([RecentByDateAdded::class])]
 class Request extends Model
@@ -51,21 +52,6 @@ class Request extends Model
         'store' => Store::class,
     ];
 
-    public function phone(): Attribute
-    {
-        return Attribute::make(
-            set: static function ($value) {
-                try {
-                    $phone = phoneNormalise($value);
-                } catch (InvalidArgumentException) {
-                    $phone = $value;
-                }
-
-                return $phone;
-            }
-        );
-    }
-
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
@@ -74,5 +60,13 @@ class Request extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(OrderStatus::class, 'status_id', 'external_id');
+    }
+
+    /**
+     * @return HasOne<Tracking>
+     */
+    public function tracking(): HasOne
+    {
+        return $this->hasOne(Tracking::class);
     }
 }

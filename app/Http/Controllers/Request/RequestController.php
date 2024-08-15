@@ -8,6 +8,7 @@ use App\Http\Requests\Request\RequestRequest;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Modules\Client\Data\ClientData;
 use Modules\Client\Data\ContactsData;
 use Modules\Client\Enums\ContactType;
@@ -16,6 +17,9 @@ use Modules\OrderStatus\Repositories\OrderStatusRepository;
 use Modules\Request\Data\RequestData;
 use Modules\Request\Repositories\RequestRepository;
 use Modules\Request\Services\RequestCreateService;
+use Modules\Shipment\Enums\Shipment;
+use Modules\Shipment\Repositories\TrackingRepository;
+use Throwable;
 
 class RequestController extends Controller
 {
@@ -72,7 +76,7 @@ class RequestController extends Controller
             phone: $data['phone'] ?? null,
             comment: $data['comment'] ?? null,
             store: Store::from($data['store']),
-            dateAdded: Carbon::now()
+            dateAdded: Carbon::now()->format('Y-m-d H:i:s')
         ));
 
         flash()->success(__('request.created'));
@@ -83,18 +87,45 @@ class RequestController extends Controller
     public function edit(int $id, OrderStatusRepository $orderStatusRepository): View
     {
         $request = $this->requestRepository->show($id);
+        $trackingType = $request->tracking->type->value ?? null;
+        $trackingNumber = $request->tracking->number ?? null;
 
         $stores = Store::cases();
+        $shipments = collect(Shipment::cases());
         $statuses = $orderStatusRepository->list();
 
-        return view('request.edit', compact('request', 'stores', 'statuses'));
+        return view('request.edit', compact(
+            'request',
+            'stores',
+            'statuses',
+            'shipments',
+            'trackingType',
+            'trackingNumber',
+        ));
     }
 
-    public function update(int $id, RequestRequest $request): RedirectResponse
+    /**
+     * @throws Throwable
+     */
+    public function update(int $id, RequestRequest $request, TrackingRepository $trackingRepository): RedirectResponse
     {
         $data = $request->validated();
 
-        $this->requestRepository->update($id, $data);
+        DB::transaction(function () use ($trackingRepository, $id, $data) {
+            $shipmentData = $data['shipment'];
+            unset($data['shipment']);
+
+            $this->requestRepository->update($id, $data);
+
+            if ($shipmentData['number']) {
+                $trackingRepository->upsert([
+                    'request_id' => $id,
+                    'type' => $shipmentData['type'],
+                    'number' => $shipmentData['number'],
+                ]);
+            }
+        });
+
 
         flash()->success(__('request.updated'));
 
