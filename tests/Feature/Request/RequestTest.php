@@ -3,6 +3,7 @@
 namespace Tests\Feature\Request;
 
 use App\Enums\Store;
+use App\Models\User;
 use Database\Factories\Orders\OrderStatusFactory;
 use Database\Factories\Requests\RequestFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,6 +12,14 @@ use Tests\TestCase;
 class RequestTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+    }
 
     public function test_create_success(): void
     {

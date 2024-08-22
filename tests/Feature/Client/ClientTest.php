@@ -3,6 +3,7 @@
 namespace Tests\Feature\Client;
 
 use App\Enums\Store;
+use App\Models\User;
 use Database\Factories\ClientContactFactory;
 use Database\Factories\ClientFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,6 +16,14 @@ use Tests\TestCase;
 class ClientTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+    }
 
     public function test_create_success(): void
     {
