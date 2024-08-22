@@ -112,12 +112,14 @@ class RequestController extends Controller
         $data = $request->validated();
 
         DB::transaction(function () use ($trackingRepository, $id, $data) {
-            $shipmentData = $data['shipment'];
-            unset($data['shipment']);
+            if (\array_key_exists('shipment', $data)) {
+                $shipmentData = $data['shipment'];
+                unset($data['shipment']);
+            }
 
             $this->requestRepository->update($id, $data);
 
-            if ($shipmentData['number']) {
+            if (isset($shipmentData['number'])) {
                 $trackingRepository->upsert([
                     'request_id' => $id,
                     'type' => $shipmentData['type'],
