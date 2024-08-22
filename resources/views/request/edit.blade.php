@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-title-md2 font-bold text-black dark:text-white">
+        <h2 class="text-title-md2 font-bold text-black">
             {{ __('actions.editing') }}
         </h2>
 
@@ -60,8 +60,8 @@
             </div>
             <div class="flex flex-col gap-9">
                 <div class="rounded-sm border border-stroke bg-white shadow-default">
-                    <div class="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-                        <h3 class="font-medium text-black dark:text-white">
+                    <div class="border-b border-stroke py-4 px-6.5">
+                        <h3 class="font-medium text-black">
                             {{ __('shipment.ttn') }}
                         </h3>
                     </div>
@@ -85,7 +85,7 @@
                                        value="{{ $trackingNumber }}"
                                        id="input-number">
                                 @error('shipment.number')
-                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>

@@ -16,5 +16,5 @@
         placeholder="{{ $placeholder }}"
         @if($required) required @endif
     />
-    @error($name)<p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>@enderror
+    @error($name)<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
 </div>

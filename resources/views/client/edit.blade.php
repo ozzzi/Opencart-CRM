@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-title-md2 font-bold text-black dark:text-white">
+        <h2 class="text-title-md2 font-bold text-black">
             {{ __('actions.editing') }} {{ $client->name }}
         </h2>
 
@@ -51,8 +51,8 @@
             </div>
             <div class="flex flex-col gap-9">
                 <div class="rounded-sm border border-stroke bg-white shadow-default">
-                    <div class="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-                        <h3 class="font-medium text-black dark:text-white">
+                    <div class="border-b border-stroke py-4 px-6.5">
+                        <h3 class="font-medium text-black">
                             {{ __('client.contacts') }}
                         </h3>
                     </div>
@@ -111,14 +111,14 @@
                                 <template x-for="(contact, index) in contacts" :key="index">
                                     <tr class="bg-white" >
                                         <td class="px-6 py-4">
-                                            <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
+                                            <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded"
                                             x-text="contact.label"></span>
                                             <span x-text="contact.contact"></span>
                                             <input type="hidden" :name="`contacts[${contact.id}][type]`" :value="contact.type">
                                             <input type="hidden" :name="`contacts[${contact.id}][value]`" :value="contact.contact">
                                         </td>
                                         <td class="py-4 text-right">
-                                            <button type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 rounded-lg font-medium text-xs p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                            <button type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 rounded-lg font-medium text-xs p-2.5 text-center inline-flex items-center me-2"
                                                     @click.prevent="remove(index, contact.id)"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -151,7 +151,7 @@
                                 />
                             </div>
                             <div class="flex-none">
-                                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg font-medium text-xs p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg font-medium text-xs p-2.5 text-center inline-flex items-center me-2"
                                         @click.prevent="add()"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -160,7 +160,7 @@
                                 </button>
                             </div>
                         </div>
-                        @error('contacts')<div class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</div>@enderror
+                        @error('contacts')<div class="mt-2 text-sm text-red-600">{{ $message }}</div>@enderror
                     </div>
                 </div>
             </div>
