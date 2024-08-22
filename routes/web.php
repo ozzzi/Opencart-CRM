@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', static function () {
-    return view('welcome');
+Route::middleware('auth')->group(function () {
+    Route::get('/', static function () {
+        return redirect()->route('requests.index');
+    });
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::prefix('clients')->group(__DIR__ . '/clients.php');
+    Route::prefix('requests')->group(__DIR__ . '/requests.php');
+    Route::prefix('orders')->group(__DIR__ . '/orders.php');
 });
 
-Route::prefix('clients')->group(__DIR__ . '/clients.php');
-Route::prefix('requests')->group(__DIR__ . '/requests.php');
-Route::prefix('orders')->group(__DIR__ . '/orders.php');
+require __DIR__.'/auth.php';

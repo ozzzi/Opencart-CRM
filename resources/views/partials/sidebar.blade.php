@@ -1,6 +1,6 @@
 <aside
     :class="sidebarToggle ? 'translate-x-0' : '-translate-x-full'"
-    class="absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0"
+    class="absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear lg:static lg:translate-x-0"
     @click.outside="sidebarToggle = false"
 >
     <!-- SIDEBAR HEADER -->
@@ -92,10 +92,10 @@
                     <!-- Menu Item Forms -->
                     <li>
                         <a
-                            class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
+                            class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark"
                             href="#"
                             @click.prevent="selected = (selected === 'Forms' ? '':'Forms')"
-                            :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Forms') || (page === 'formElements' || page === 'formLayout') }"
+                            :class="{ 'bg-graydark': (selected === 'Forms') || (page === 'formElements' || page === 'formLayout') }"
                         >
                             <svg
                                 class="fill-current"
@@ -178,10 +178,10 @@
                     <!-- Menu Item Tables -->
                     <li>
                         <a
-                            class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
+                            class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark"
                             href="tables.html"
                             @click="selected = (selected === 'Tables' ? '':'Tables')"
-                            :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Tables') && (page === 'Tables') }"
+                            :class="{ 'bg-graydark': (selected === 'Tables') && (page === 'Tables') }"
                         >
                             <svg
                                 class="fill-current"
@@ -217,10 +217,10 @@
                     <!-- Menu Item Settings -->
                     <li>
                         <a
-                            class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
+                            class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark"
                             href="settings.html"
                             @click="selected = (selected === 'Settings' ? '':'Settings')"
-                            :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Settings') && (page === 'settings') }"
+                            :class="{ 'bg-graydark': (selected === 'Settings') && (page === 'settings') }"
                             :class="page === 'settings' && 'bg-graydark'"
                         >
                             <svg

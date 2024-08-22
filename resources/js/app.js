@@ -8,4 +8,3 @@ window.axios = axios
 Alpine.plugin(persist)
 window.Alpine = Alpine;
 Alpine.start();
-
