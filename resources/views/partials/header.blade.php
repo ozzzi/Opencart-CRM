@@ -27,10 +27,6 @@
           </span>
         </span>
             </button>
-            <!-- Hamburger Toggle BTN -->
-            <a class="block flex-shrink-0 lg:hidden" href="/">
-                Logo
-            </a>
         </div>
         <div class="hidden sm:block"></div>
 
