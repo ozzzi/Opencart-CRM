@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Order\Services;
 
 use App\Enums\Store;
+use Illuminate\Support\Facades\DB;
 use Modules\Client\Data\ClientData;
 use Modules\Client\Data\ContactsData;
 use Modules\Client\Enums\ContactType;
@@ -39,22 +40,24 @@ class OrderService
                     return;
                 }
 
-                $orderCreated = $this->importOrder($order, $externalOrderRepository, $store);
+                DB::transaction(function () use ($store, $externalOrderRepository, $order) {
+                    $orderCreated = $this->importOrder($order, $externalOrderRepository, $store);
 
-                $clientId = $this->importClient($order, $store);
+                    $clientId = $this->importClient($order, $store);
 
-                $this->importRequest(
-                    new RequestData(
-                        orderId: (int) $order->order_id,
-                        clientId: $clientId,
-                        statusId: $orderCreated->status_id,
-                        name: $orderCreated->name,
-                        phone: $orderCreated->phone,
-                        comment: $orderCreated->comment,
-                        store: $store,
-                        dateAdded: $order->date_added
-                    )
-                );
+                    $this->importRequest(
+                        new RequestData(
+                            orderId: (int) $order->order_id,
+                            clientId: $clientId,
+                            statusId: $orderCreated->status_id,
+                            name: $orderCreated->name,
+                            phone: $orderCreated->phone,
+                            comment: $orderCreated->comment,
+                            store: $store,
+                            dateAdded: $order->date_added
+                        )
+                    );
+                });
             });
     }
 
