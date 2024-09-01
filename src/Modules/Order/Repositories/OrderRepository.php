@@ -16,6 +16,7 @@ class OrderRepository
     {
         return Order::query()
             ->with(['status'])
+            ->orderByDesc('order_id')
             ->paginate();
     }
 
