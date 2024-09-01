@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Order\Services;
 
 use App\Enums\Store;
+use App\Events\Orders\OrderCreated;
 use Illuminate\Support\Facades\DB;
 use Modules\Client\Data\ClientData;
 use Modules\Client\Data\ContactsData;
@@ -49,15 +50,17 @@ class OrderService
                         new RequestData(
                             orderId: (int) $order->order_id,
                             clientId: $clientId,
-                            statusId: $orderCreated->status_id,
-                            name: $orderCreated->name,
-                            phone: $orderCreated->phone,
-                            comment: $orderCreated->comment,
+                            statusId: $orderCreated?->status_id,
+                            name: $orderCreated?->name,
+                            phone: $orderCreated?->phone,
+                            comment: $orderCreated?->comment,
                             store: $store,
                             dateAdded: $order->date_added
                         )
                     );
                 });
+
+                OrderCreated::dispatch($order->order_id);
             });
     }
 
