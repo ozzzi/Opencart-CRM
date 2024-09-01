@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Modules\Client\Services;
 
 use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
 use Modules\Client\Data\ClientData;
+use Modules\Client\Data\ContactsData;
 use Modules\Client\Enums\ContactType;
 use Modules\Client\Models\ClientContact;
 use Modules\Client\Repositories\ClientContactRepository;
@@ -61,17 +63,23 @@ class ClientCreateService
     private function searchByContacts(ClientData $data): int
     {
         $queryContact = ClientContact::query()
-        ->select('client_id');
+            ->select('client_id');
 
-        foreach ($data->contacts as $contact) {
+        $values = array_map(static function (ContactsData $contact) {
             if ($contact->type === ContactType::Phone) {
-                $value = preg_replace('/\D/', '', $contact->value);
+                try {
+                    $value = phoneNormalise($contact->value);
+                } catch (InvalidArgumentException) {
+                    $value = $contact->value;
+                }
             } else {
                 $value = $contact->value;
             }
 
-            $queryContact->orWhere('value', $value);
-        }
+            return $value;
+        }, $data->contacts);
+
+        $queryContact->whereIn('value', $values);
 
         return (int) $queryContact->value('client_id');
     }

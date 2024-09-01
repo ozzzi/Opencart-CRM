@@ -24,6 +24,15 @@ class ClientContactRepository
         return ClientContact::query()->findOrFail($id);
     }
 
+    /**
+     * @param string[] $values
+     * @return Model|null
+     */
+    public function search(array $values): Model|null
+    {
+        return ClientContact::query()->whereIN('value', $values)->first();
+    }
+
     public function store(Client $client, array $data): Model
     {
         return $client->contacts()->create($data);
