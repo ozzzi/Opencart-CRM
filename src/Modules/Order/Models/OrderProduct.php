@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $product_id
  * @property string $name
  * @property string $model
- * @property string $sku
  * @property int $quantity
  * @property float $price
  * @property float $total
@@ -28,7 +27,6 @@ class OrderProduct extends Model
         'product_id',
         'name',
         'model',
-        'sku',
         'quantity',
         'price',
         'total',
