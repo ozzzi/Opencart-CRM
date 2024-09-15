@@ -7,5 +7,6 @@ use App\Enums\Store;
 return [
     'list' => [
         Store::Wildbear,
+        Store::Procord,
     ],
 ];
