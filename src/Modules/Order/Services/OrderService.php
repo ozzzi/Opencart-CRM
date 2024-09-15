@@ -48,7 +48,7 @@ class OrderService
 
                     $this->importRequest(
                         new RequestData(
-                            orderId: (int) $order->order_id,
+                            orderId: $orderCreated?->id,
                             clientId: $clientId,
                             statusId: $orderCreated?->status_id,
                             name: $orderCreated?->name,

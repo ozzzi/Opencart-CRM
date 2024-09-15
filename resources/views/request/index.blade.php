@@ -53,7 +53,7 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     @if($request->order_id)
-                                        <a href="{{ route('orders.show_order_id', $request->order_id) }}">{{ $request->order_id }}</a>
+                                        <a href="{{ route('orders.show', $request->order_id) }}">{{ $request->order_id }}</a>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">{{ $request->status->name }}</td>
