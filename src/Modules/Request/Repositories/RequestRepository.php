@@ -6,14 +6,16 @@ namespace Modules\Request\Repositories;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\Request\Model\Filters\RequestFilter;
 use Modules\Request\Model\Request;
 
 class RequestRepository
 {
-    public function list(): LengthAwarePaginator
+    public function list(array $filters = []): LengthAwarePaginator
     {
-        return Request::query()
+        return Request::filter(new RequestFilter($filters))
             ->with(['status', 'tracking'])
+            ->orderByDesc('date_added')
             ->paginate();
     }
 

@@ -8,6 +8,7 @@ use App\Http\Requests\Request\RequestRequest;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Client\Data\ClientData;
 use Modules\Client\Data\ContactsData;
@@ -23,21 +24,42 @@ use Throwable;
 
 class RequestController extends Controller
 {
-    public function __construct(private readonly RequestRepository $requestRepository)
-    {
+    public function __construct(
+        private readonly RequestRepository $requestRepository,
+        private readonly OrderStatusRepository $orderStatusRepository
+    ) {
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $requests = $this->requestRepository->list();
+        $allowedFilters = [
+            'date_from',
+            'date_to',
+            'name',
+            'phone',
+            'store',
+            'status',
+        ];
 
-        return view('request.index', compact('requests'));
+        $filterData = $request->only($allowedFilters);
+        $requests = $this->requestRepository->list($filterData);
+
+        $filters = [];
+
+        foreach ($allowedFilters as $filter) {
+            $filters[$filter] = $request->input($filter);
+        }
+
+        $stores = array_column(Store::cases(), 'value');
+        $statuses = $this->orderStatusRepository->list()->toArray();
+
+        return view('request.index', compact('requests', 'filters', 'stores', 'statuses'));
     }
 
-    public function create(OrderStatusRepository $orderStatusRepository): View
+    public function create(): View
     {
         $stores = Store::cases();
-        $statuses = $orderStatusRepository->list();
+        $statuses = $this->orderStatusRepository->list();
 
         return view('request.create', compact('stores', 'statuses'));
     }

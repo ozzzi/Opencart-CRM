@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Modules\Request\Model;
 
 use App\Enums\Store;
+use App\Models\Filter\Filter;
+use App\Models\Filter\Filterable;
 use App\Models\Scopes\RecentByDateAdded;
 use App\Support\Traits\StoreColor;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,12 +33,14 @@ use Modules\Shipment\Models\Tracking;
  * @property-read Client $client
  * @property-read string $storeColor
  * @property-read Tracking $tracking
+ * @method static Builder filter(Filter $filter)
  */
 #[ScopedBy([RecentByDateAdded::class])]
 class Request extends Model
 {
     use HasFactory;
     use StoreColor;
+    use Filterable;
 
     protected $fillable = [
         'order_id',

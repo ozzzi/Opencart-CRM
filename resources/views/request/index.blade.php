@@ -16,6 +16,51 @@
         </nav>
     </div>
 
+    <div class="rounded-sm border border-stroke bg-white shadow-default py-4 px-6.5 mb-4">
+        <form action="" id="filter">
+            <div class="flex gap-3">
+                <div>
+                    <input type="date" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500" name="date_from" value="{{ $filters['date_from'] }}">
+                </div>
+                <div>
+                    <input type="date" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500" name="date_to" value="{{ $filters['date_to'] }}">
+                </div>
+                <div>
+                    <input type="text"class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500" name="name" value="{{ $filters['name'] }}" placeholder="{{ __('fields.name') }}">
+                </div>
+                <div>
+                    <input type="text" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500" name="phone" value="{{ $filters['phone'] }}" placeholder="{{ __('fields.phone') }}">
+                </div>
+            </div>
+            <div class="flex gap-3 mt-3">
+                <div>
+                    <label for="store" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('fields.store') }}</label>
+                    <select id="store" name="store" class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
+                        <option></option>
+                        @foreach($stores as $store)
+                            <option value="{{ $store }}" @selected($filters['store'] === $store)>{{ $store }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('fields.status') }}</label>
+                    <select id="status" name="status" class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
+                        <option></option>
+                        @foreach($statuses as $status)
+                            <option value="{{ $status['external_id'] }}" @selected($status['external_id'] === (int) $filters['status'])>{{ $status['name'] }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="mt-3">
+                <x-buttons.button type="submit" color="blue">{{ __('actions.search') }}</x-buttons.button>
+                <button type="reset" onclick="document.getElementById('filter').reset().submit();"
+                        class="btn btn-danger btn-sm">{{ __('actions.reset') }}
+                </button>
+            </div>
+        </form>
+    </div>
+
     <div class="grid grid-cols-1 gap-9 sm:grid-cols-1">
         <div class="flex flex-col gap-9">
             <div class="rounded-sm border border-stroke bg-white shadow-default py-4 px-6.5">
@@ -59,7 +104,7 @@
                                 <td class="px-6 py-4">{{ $request->status->name }}</td>
                                 <td class="px-6 py-4">{{ $request->name }}</td>
                                 <td class="px-6 py-4">{{ $request->phone }}</td>
-                                <td class="px-6 py-4">{{ $request->created_at }}</td>
+                                <td class="px-6 py-4 text-xs">{{ $request->date_added }}</td>
                                 <td class="px-6 py-4 text-right">
                                     <x-form action="{{ route('requests.delete', $request->id) }}" method="delete">
                                         <a href="{{ route('requests.edit', $request->id) }}" class="px-3 py-2 text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs text-center inline-flex items-center me-2">
