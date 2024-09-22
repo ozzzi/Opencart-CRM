@@ -16,6 +16,43 @@
         </nav>
     </div>
 
+    <div class="rounded-sm border border-stroke bg-white shadow-default py-4 px-6.5 mb-4">
+        <form action="" id="filter">
+            <div class="flex gap-3">
+                <div>
+                    <input type="text"class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500" name="name" value="{{ $filters['name'] }}" placeholder="{{ __('fields.name') }}">
+                </div>
+                <div>
+                    <input type="text"class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500" name="contact" value="{{ $filters['contact'] }}" placeholder="{{ __('fields.contact') }}">
+                </div>
+                <div>
+                    <input type="text"class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500" name="address" value="{{ $filters['address'] }}" placeholder="{{ __('fields.address') }}">
+                </div>
+            </div>
+            <div class="flex gap-3 mt-3">
+                <div>
+                    <label for="store" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('fields.store') }}</label>
+                    <select id="store" name="store" class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
+                        <option></option>
+                        @foreach($stores as $store)
+                            <option value="{{ $store }}" @selected($filters['store'] === $store)>{{ $store }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex items-center gap-1">
+                    <label for="is_bad" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('fields.is_bad') }}</label>
+                    <input type="checkbox" name="is_bad" @checked($filters['is_bad']) class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                </div>
+            </div>
+            <div class="mt-3">
+                <x-buttons.button type="submit" color="blue">{{ __('actions.search') }}</x-buttons.button>
+                <button type="reset" onclick="document.getElementById('filter').reset().submit();"
+                        class="btn btn-danger btn-sm">{{ __('actions.reset') }}
+                </button>
+            </div>
+        </form>
+    </div>
+
     <div class="grid grid-cols-1 gap-9 sm:grid-cols-1">
         <div class="flex flex-col gap-9">
             <div class="rounded-sm border border-stroke bg-white shadow-default py-4 px-6.5">

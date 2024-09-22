@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\ClientRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Client\Enums\ContactType;
 use Modules\Client\Repositories\ClientContactRepository;
@@ -20,11 +21,28 @@ class ClientController extends Controller
     ) {
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $clients = $this->clientRepository->list();
+        $allowedFilters = [
+            'name',
+            'contact',
+            'address',
+            'is_bad',
+            'store',
+        ];
 
-        return view('client.index', compact('clients'));
+        $filterData = $request->only($allowedFilters);
+        $clients = $this->clientRepository->list($filterData);
+
+        $filters = [];
+
+        foreach ($allowedFilters as $filter) {
+            $filters[$filter] = $request->input($filter);
+        }
+
+        $stores = array_column(Store::cases(), 'value');
+
+        return view('client.index', compact('clients', 'filters', 'stores'));
     }
 
     public function create(): View

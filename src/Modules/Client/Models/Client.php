@@ -3,7 +3,10 @@
 namespace Modules\Client\Models;
 
 use App\Enums\Store;
+use App\Models\Filter\Filter;
+use App\Models\Filter\Filterable;
 use App\Support\Traits\StoreColor;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,11 +25,13 @@ use Modules\Client\Enums\ContactType;
  * @property-read string $email
  * @property-read string $storeColor
  * @property-read Collection $contacts
+ * @method static Builder filter(Filter $filter)
  */
 class Client extends Model
 {
     use HasFactory;
     use StoreColor;
+    use Filterable;
 
     protected $fillable = [
         'name',

@@ -6,15 +6,16 @@ namespace Modules\Client\Repositories;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Modules\Client\Models\Client;
+use Modules\Client\Models\Filters\ClientFilter;
 
 class ClientRepository
 {
     /**
      * @return LengthAwarePaginator<Client>
      */
-    public function list(): LengthAwarePaginator
+    public function list(array $filters = []): LengthAwarePaginator
     {
-        return Client::query()
+        return Client::filter(new ClientFilter($filters))
             ->with('contacts')
             ->paginate();
     }
