@@ -73,7 +73,7 @@
                         </thead>
                         <tbody>
                         @foreach($clients as $client)
-                            <tr>
+                            <tr @if($client->is_bad) class="bg-red-400" @endif>
                                 <td class="px-6 py-4">{{ $client->id }}</td>
                                 <td class="px-6 py-4">
                                     <x-badge type="{{ $client->storeColor }}">{{ $client->store->value }}</x-badge>
