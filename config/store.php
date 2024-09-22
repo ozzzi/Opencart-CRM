@@ -9,4 +9,9 @@ return [
         Store::Wildbear,
         Store::Procord,
     ],
+
+    'status_processing' => [
+        Store::Wildbear->value => [2],
+        Store::Procord->value => [1],
+    ],
 ];

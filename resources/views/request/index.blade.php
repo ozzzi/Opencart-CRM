@@ -84,7 +84,7 @@
                         </thead>
                         <tbody>
                         @foreach($requests as $request)
-                            <tr>
+                            <tr @if($request->isNew) class="bg-blue-400" @endif>
                                 <td class="px-6 py-4">{{ $request->id }}</td>
                                 <td class="px-6 py-4">
                                     <x-badge type="{{ $request->storeColor }}">{{ $request->store->value }}</x-badge>

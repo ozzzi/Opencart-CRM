@@ -11,6 +11,7 @@ use App\Models\Scopes\RecentByDateAdded;
 use App\Support\Traits\StoreColor;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -73,5 +74,14 @@ class Request extends Model
     public function tracking(): HasOne
     {
         return $this->hasOne(Tracking::class);
+    }
+
+    public function isNew(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return in_array($this->status_id, config('store.status_processing')[$this->store->value], true);
+            }
+        );
     }
 }
