@@ -21,7 +21,7 @@ enum Store: string
     {
         return match ($this) {
             self::Wildbear => 1,
-            self::Procord => 2,
+            self::Procord => 4,
         };
     }
 }
