@@ -35,7 +35,10 @@ class OrderService
 
         $externalOrderRepository->listLazy()
             ->each(function ($order) use ($store, $externalOrderRepository) {
-                $existRequest = $this->requestRepository->findWhere(['order_id', $order->order_id]);
+                $existRequest = $this->requestRepository->findWhere([
+                    ['order_id', $order->order_id],
+                    ['store', $store->value],
+                ]);
 
                 if ($existRequest->count()) {
                     return;

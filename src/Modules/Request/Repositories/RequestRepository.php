@@ -27,7 +27,7 @@ class RequestRepository
     public function findWhere(array $criteria): Collection
     {
         return Request::query()
-            ->where([$criteria])
+            ->where($criteria)
             ->get();
     }
 
