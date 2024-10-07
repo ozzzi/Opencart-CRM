@@ -92,6 +92,7 @@ class RequestController extends Controller
 
         $requestCreateService(new RequestData(
             orderId: $data['order_id'] ?? null,
+            orderIdExt: null,
             clientId: $clientId,
             statusId: $data['status_id'],
             name: $data['name'],

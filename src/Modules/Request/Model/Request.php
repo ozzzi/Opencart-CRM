@@ -23,6 +23,7 @@ use Modules\Shipment\Models\Tracking;
 /**
  * @property int $id
  * @property ?int $order_id
+ * @property ?int $order_id_ext
  * @property int $client_id
  * @property int $status_id
  * @property string $name
@@ -45,6 +46,7 @@ class Request extends Model
 
     protected $fillable = [
         'order_id',
+        'order_id_ext',
         'client_id',
         'status_id',
         'name',

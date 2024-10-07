@@ -13,6 +13,7 @@ class RequestData
 
     public function __construct(
         public readonly ?int $orderId,
+        public readonly ?int $orderIdExt,
         public readonly ?int $clientId,
         public readonly int $statusId,
         public readonly string $name,
