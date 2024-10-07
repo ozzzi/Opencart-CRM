@@ -6,6 +6,7 @@ namespace Modules\Order\Services;
 
 use App\Enums\Store;
 use App\Events\Orders\OrderCreated;
+use DateTimeInterface;
 use Illuminate\Support\Facades\DB;
 use Modules\Client\Data\ClientData;
 use Modules\Client\Data\ContactsData;
@@ -29,14 +30,14 @@ class OrderService
     ) {
     }
 
-    public function sync(Store $store): void
+    public function sync(Store $store, DateTimeInterface $dateStart): void
     {
         $externalOrderRepository = new ExternalOrderRepository($store);
 
-        $externalOrderRepository->listLazy()
+        $externalOrderRepository->listLazy($dateStart)
             ->each(function ($order) use ($store, $externalOrderRepository) {
                 $existRequest = $this->requestRepository->findWhere([
-                    ['order_id', $order->order_id],
+                    ['order_id_ext', $order->order_id],
                     ['store', $store->value],
                 ]);
 
@@ -52,6 +53,7 @@ class OrderService
                     $this->importRequest(
                         new RequestData(
                             orderId: $orderCreated?->id,
+                            orderIdExt: $order->order_id,
                             clientId: $clientId,
                             statusId: $orderCreated?->status_id,
                             name: $orderCreated?->name,

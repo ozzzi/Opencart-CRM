@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Order\Repositories;
 
 use App\Enums\Store;
+use DateTimeInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\LazyCollection;
@@ -15,10 +16,11 @@ class ExternalOrderRepository
     {
     }
 
-    public function listLazy(): LazyCollection
+    public function listLazy(DateTimeInterface $dateStart): LazyCollection
     {
         return DB::connection($this->store->value)
             ->table('order')
+            ->where('date_added', '>=', $dateStart->format('Y-m-d') . ' 00:00:00')
             ->orderBy('order_id', 'desc')
             ->lazy();
     }
