@@ -14,7 +14,7 @@ class OrderNotification
 
     public function handle(OrderCreated $event): void
     {
-        $message = sprintf('Заказ номер %s оформлен', $event->orderId);
+        $message = sprintf('Заказ номер %s оформлен. Магазин: %s', $event->orderId, $event->store);
 
         $this->notificationService->setService(new TelegramNotification(
             config('services.telegram.token'),

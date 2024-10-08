@@ -12,7 +12,8 @@ class OrderCreated
      * Create a new event instance.
      */
     public function __construct(
-        public int $orderId
+        public int $orderId,
+        public string $store
     ) {
     }
 }

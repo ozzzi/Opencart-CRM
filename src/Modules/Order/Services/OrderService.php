@@ -65,7 +65,7 @@ class OrderService
                     );
                 });
 
-                OrderCreated::dispatch($order->order_id);
+                OrderCreated::dispatch($order->order_id, $store->value);
             });
     }
 
