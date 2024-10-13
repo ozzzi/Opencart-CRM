@@ -18,5 +18,6 @@ class RequestFilter extends BaseFilter
         'phone' => PhoneFilter::class,
         'store' => StoreFilter::class,
         'status' => StatusFilter::class,
+        'not_completed' => NotCompletedFilter::class,
     ];
 }

@@ -39,6 +39,7 @@ class RequestController extends Controller
             'phone',
             'store',
             'status',
+            'not_completed',
         ];
 
         $filterData = $request->only($allowedFilters);

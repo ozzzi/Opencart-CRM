@@ -51,6 +51,10 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="flex items-center gap-1">
+                    <label for="new_status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('fields.new_status') }}</label>
+                    <input type="checkbox" id="new_status" name="not_completed" @checked($filters['not_completed']) class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                </div>
             </div>
             <div class="mt-3">
                 <x-buttons.button type="submit" color="blue">{{ __('actions.search') }}</x-buttons.button>
@@ -101,7 +105,7 @@
                                         <a href="{{ route('orders.show', $request->order_id) }}">{{ $request->order_id }}</a>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4">{{ $request->status->name }}</td>
+                                <td class="px-6 py-4">{{ $request->status?->name }}</td>
                                 <td class="px-6 py-4">{{ $request->name }}</td>
                                 <td class="px-6 py-4">{{ $request->phone }}</td>
                                 <td class="px-6 py-4 text-xs">{{ $request->date_added }}</td>
