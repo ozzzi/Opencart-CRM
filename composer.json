@@ -14,7 +14,8 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
-        "sentry/sentry-laravel": "^4.8"
+        "sentry/sentry-laravel": "^4.8",
+        "ext-pcntl": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",
