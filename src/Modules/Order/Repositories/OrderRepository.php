@@ -77,4 +77,11 @@ class OrderRepository
 
         return $order;
     }
+
+    public function update(int $id, array $data): int
+    {
+        return Order::query()
+            ->where('id', $id)
+            ->update($data);
+    }
 }

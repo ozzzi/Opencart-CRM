@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Request\Repositories;
 
+use App\Enums\Store;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\LazyCollection;
 use Modules\Request\Model\Filters\RequestFilter;
 use Modules\Request\Model\Request;
 
@@ -17,6 +19,13 @@ class RequestRepository
             ->with(['status', 'tracking'])
             ->orderByDesc('date_added')
             ->paginate();
+    }
+
+    public function listNotCompleted(Store $store): LazyCollection
+    {
+        return Request::query()
+            ->whereNotIn('status_id', config('store.status_completed')[$store->value])
+            ->lazyById();
     }
 
     public function show(int $id): Request
