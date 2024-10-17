@@ -34,7 +34,6 @@ class OrderSync extends Command
                     'store' => $store->value
                 ]);
             }
-
         }
 
         return self::SUCCESS;
