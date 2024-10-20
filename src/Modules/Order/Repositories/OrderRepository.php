@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Order\Repositories;
 
+use App\Enums\Store;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Order\Data\OrderData;
 use Modules\Order\Models\Order;
@@ -18,6 +20,13 @@ class OrderRepository
             ->with(['status'])
             ->orderByDesc('order_id')
             ->paginate();
+    }
+
+    public function listOldNotCompleted(Store $store): Collection
+    {
+        return Order::query()
+            ->nonCompleted($store)
+            ->get();
     }
 
     public function show(int $id): Order

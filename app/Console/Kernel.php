@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('app:order-sync')->everyMinute();
         $schedule->command('app:order-status-update')->hourly();
+        $schedule->command('app:order-notify-non-completed')->dailyAt('11:00');
     }
 
     /**

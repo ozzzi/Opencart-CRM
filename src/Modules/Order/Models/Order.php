@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Order\Models\Builders\OrderBuilder;
 use Modules\OrderStatus\Models\OrderStatus;
 
 /**
@@ -77,5 +78,10 @@ class Order extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(OrderStatus::class, 'status_id', 'external_id');
+    }
+
+    public function newEloquentBuilder($query): OrderBuilder
+    {
+        return new OrderBuilder($query);
     }
 }
