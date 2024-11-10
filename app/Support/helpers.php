@@ -35,3 +35,10 @@ if (!function_exists('phoneNormalise')) {
         return $phone;
     }
 }
+
+if (!function_exists('priceFormat')) {
+    function priceFormat(float $price): string
+    {
+        return number_format($price, 2, '.', '');
+    }
+}
