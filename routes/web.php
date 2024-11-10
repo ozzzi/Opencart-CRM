@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('clients')->group(__DIR__ . '/clients.php');
     Route::prefix('requests')->group(__DIR__ . '/requests.php');
     Route::prefix('orders')->group(__DIR__ . '/orders.php');
+    Route::prefix('products')->group(__DIR__ . '/products.php');
 });
 
 require __DIR__.'/auth.php';
