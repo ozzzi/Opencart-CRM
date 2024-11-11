@@ -44,7 +44,7 @@
                                 </td>
                                 <td class="px-6 py-4">{{ $order->name }}</td>
                                 <td class="px-6 py-4">{{ $order->phone }}</td>
-                                <td class="px-6 py-4">{{ $order->status->name }}</td>
+                                <td class="px-6 py-4">{{ $order->status?->name }}</td>
                                 <td class="px-6 py-4">{{ $order->total }}</td>
                                 <td class="px-6 py-4">{{ $order->date_added }}</td>
                                 <td class="px-6 py-4 text-right">
