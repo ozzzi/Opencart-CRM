@@ -1,0 +1,59 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/DockerfileLocal
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+
+  webserver:
+    image: arm64v8/nginx:alpine
+    container_name: webserver-paracord
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./docker/nginx/nginx.local.conf/:/etc/nginx/conf.d/nginx.local.conf
+    ports:
+      - "8080:80"
+      - "443:443"
+
+  db:
+    image: mysql:5.7
+    platform: linux/x86_64
+    container_name: db-paracord
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
+    volumes:
+      - ./docker/db:/var/lib/mysql
+    user: mysql
+
+  dbtest:
+    image: mysql:5.7
+    platform: linux/x86_64
+    container_name: db-paracord-test
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: laravel-test
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
+    user: mysql
+
+  redis:
+    image: arm64v8/redis
+
+  adminer:
+    image: arm64v8/adminer
+    restart: unless-stopped
+    ports:
+      - 8000:8080

@@ -1,0 +1,15 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+
+  webserver:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
