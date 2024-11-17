@@ -27,7 +27,7 @@ RUN groupadd -g 1000 www-data
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
 COPY ../ /var/www
-COPY --chown=www:www ./www /var/www
+COPY --chown=www:www ./ /var/www
 
 # Change current user to www
 USER 1000
