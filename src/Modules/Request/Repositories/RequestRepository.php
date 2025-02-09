@@ -18,7 +18,8 @@ class RequestRepository
         return Request::filter(new RequestFilter($filters))
             ->with(['status', 'tracking'])
             ->orderByDesc('date_added')
-            ->paginate();
+            ->paginate()
+            ->withQueryString();
     }
 
     public function listNotCompleted(Store $store): LazyCollection

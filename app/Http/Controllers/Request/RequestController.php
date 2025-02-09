@@ -6,10 +6,11 @@ use App\Enums\Store;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Request\RequestRequest;
 use Carbon\Carbon;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
+use Inertia\Response;
 use Modules\Client\Data\ClientData;
 use Modules\Client\Data\ContactsData;
 use Modules\Client\Enums\ContactType;
@@ -30,7 +31,7 @@ class RequestController extends Controller
     ) {
     }
 
-    public function index(Request $request): View
+    public function index(Request $request): Response
     {
         $allowedFilters = [
             'date_from',
@@ -42,27 +43,28 @@ class RequestController extends Controller
             'not_completed',
         ];
 
+        $filters = $request->only($allowedFilters);
+
         $filterData = $request->only($allowedFilters);
         $requests = $this->requestRepository->list($filterData);
-
-        $filters = [];
-
-        foreach ($allowedFilters as $filter) {
-            $filters[$filter] = $request->input($filter);
-        }
 
         $stores = array_column(Store::cases(), 'value');
         $statuses = $this->orderStatusRepository->list()->toArray();
 
-        return view('request.index', compact('requests', 'filters', 'stores', 'statuses'));
+        return Inertia::render('Request/Index', compact('requests', 'filters', 'stores', 'statuses'));
     }
 
-    public function create(): View
+    public function create(): Response
     {
         $stores = Store::cases();
         $statuses = $this->orderStatusRepository->list();
+        $shipments = collect(Shipment::cases());
 
-        return view('request.create', compact('stores', 'statuses'));
+        return Inertia::render('Request/Create', compact(
+            'stores',
+            'statuses',
+            'shipments'
+        ));
     }
 
     public function store(
@@ -108,7 +110,7 @@ class RequestController extends Controller
         return redirect()->route('requests.index');
     }
 
-    public function edit(int $id, OrderStatusRepository $orderStatusRepository): View
+    public function edit(int $id, OrderStatusRepository $orderStatusRepository): Response
     {
         $request = $this->requestRepository->show($id);
         $trackingType = $request->tracking->type->value ?? null;
@@ -118,7 +120,7 @@ class RequestController extends Controller
         $shipments = collect(Shipment::cases());
         $statuses = $orderStatusRepository->list();
 
-        return view('request.edit', compact(
+        return Inertia::render('Request/Edit', compact(
             'request',
             'stores',
             'statuses',

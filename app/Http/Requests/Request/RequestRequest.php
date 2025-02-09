@@ -30,7 +30,7 @@ class RequestRequest extends FormRequest
             'client_id' => ['nullable', 'exists:clients,id'],
             'status_id' => ['required', 'exists:order_statuses,external_id'],
             'name' => ['required', 'min:3'],
-            'phone' => ['nullable', 'min:10'],
+            'phone' => ['required', 'min:10'],
             'comment' => ['nullable'],
             'store' => ['required', Rule::enum(Store::class)],
             'shipment' => ['nullable', 'array:type,number'],
