@@ -7,6 +7,7 @@ namespace Modules\Order\Repositories;
 use App\Enums\Store;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Modules\Order\Data\OrderData;
 use Modules\Order\Models\Order;
@@ -19,7 +20,8 @@ class OrderRepository
         return Order::query()
             ->with(['status'])
             ->orderByDesc('order_id')
-            ->paginate();
+            ->paginate()
+            ->withQueryString();
     }
 
     public function listOldNotCompleted(Store $store): Collection

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 use Modules\Order\Repositories\OrderRepository;
 
 class OrderController extends Controller
@@ -12,24 +14,17 @@ class OrderController extends Controller
     {
     }
 
-    public function index(): View
+    public function index(): Response
     {
         $orders = $this->orderRepository->list();
 
-        return view('order.index', compact('orders'));
+        return Inertia::render('Order/Index', compact('orders'));
     }
 
-    public function show(int $id): View
+    public function show(int $id): Response
     {
         $order = $this->orderRepository->show($id);
 
-        return view('order.show', compact('order'));
-    }
-
-    public function showByOrderId(int $orderId): View
-    {
-        $order = $this->orderRepository->showByOrderId($orderId);
-
-        return view('order.show', compact('order'));
+        return Inertia::render('Order/Show', compact('order'));
     }
 }
