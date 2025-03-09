@@ -17,7 +17,8 @@ class ClientRepository
     {
         return Client::filter(new ClientFilter($filters))
             ->with('contacts')
-            ->paginate();
+            ->paginate()
+            ->withQueryString();
     }
 
     public function show(int $id): Client

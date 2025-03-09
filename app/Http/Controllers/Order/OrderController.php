@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\View\View;
 use Inertia\Inertia;
 use Inertia\Response;
 use Modules\Order\Repositories\OrderRepository;

@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Client;
 use App\Enums\Store;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\ClientRequest;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
+use Inertia\Response;
 use Modules\Client\Enums\ContactType;
 use Modules\Client\Repositories\ClientContactRepository;
 use Modules\Client\Repositories\ClientRepository;
@@ -21,7 +22,7 @@ class ClientController extends Controller
     ) {
     }
 
-    public function index(Request $request): View
+    public function index(Request $request): Response
     {
         $allowedFilters = [
             'name',
@@ -42,15 +43,15 @@ class ClientController extends Controller
 
         $stores = array_column(Store::cases(), 'value');
 
-        return view('client.index', compact('clients', 'filters', 'stores'));
+        return Inertia::render('Client/Index', compact('clients', 'filters', 'stores'));
     }
 
-    public function create(): View
+    public function create(): Response
     {
         $types = ContactType::cases();
         $stores = Store::cases();
 
-        return view('client.create', compact('types', 'stores'));
+        return Inertia::render('Client/Create', compact('types', 'stores'));
     }
 
     public function store(ClientRequest $request): RedirectResponse
@@ -73,19 +74,22 @@ class ClientController extends Controller
         return redirect()->route('clients.index');
     }
 
-    public function edit(int $id): View
+    public function edit(int $id): Response
     {
         $client = $this->clientRepository->show($id);
         $contacts = $this->clientContactRepository->list($client);
         $types = ContactType::cases();
         $stores = Store::cases();
 
-        return view('client.edit', compact(
-            'client',
-            'contacts',
-            'types',
-            'stores'
-        ));
+        return Inertia::render(
+            'Client/Edit',
+            compact(
+                'client',
+                'contacts',
+                'types',
+                'stores'
+            )
+        );
     }
 
     public function update(int $id, ClientRequest $request): RedirectResponse
