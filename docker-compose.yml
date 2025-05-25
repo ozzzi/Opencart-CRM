@@ -23,6 +23,7 @@ services:
             - .:/var/www
         networks:
             - crm
+            - web-network
         depends_on:
             - mysql
             - redis
