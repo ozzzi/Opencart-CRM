@@ -2,7 +2,7 @@ services:
     app:
         build:
             context: .
-            dockerfile: docker/php
+            dockerfile: docker/php/Dockerfile
             args:
                 - ENVIRONMENT=production
         image: digitalocean.com/php
