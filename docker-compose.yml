@@ -2,36 +2,89 @@ services:
     app:
         build:
             context: .
-            dockerfile: docker
+            dockerfile: docker/php
+            args:
+                - ENVIRONMENT=production
         image: digitalocean.com/php
-        container_name: app-paracord
+        container_name: php-crm
         restart: unless-stopped
         tty: true
         environment:
-            - APP_ENV=local
-            - APP_DEBUG=true
+            - APP_ENV=production
+            - APP_DEBUG=false
+            - PHP_OPCACHE_ENABLE=1
+            - PHP_MEMORY_LIMIT=128M
+            - PHP_MAX_EXECUTION_TIME=300
+            - PHP_UPLOAD_MAX_FILESIZE=64M
+            - PHP_POST_MAX_SIZE=64M
+            - PHP_DISPLAY_ERROR=off
         working_dir: /var/www
         volumes:
             - .:/var/www
-            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - crm
+        depends_on:
+            - mysql
+            - redis
 
     webserver:
-        image: nginx:alpine
-        container_name: webserver-paracord
+        image: nginx:stable-alpine
+        container_name: webserver-crm
         restart: unless-stopped
         tty: true
-        ports:
-            - "8080:80"
-            - "443:443"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.crm.rule=Host(`crm.wildbear.com.ua`)"
+            - "traefik.http.routers.crm.entrypoints=websecure"
+            - "traefik.http.routers.crm.tls.certresolver=letsencrypt"
+            - "traefik.http.services.crm.loadbalancer.server.port=80"
+            - "traefik.docker.network=web-network"
         volumes:
             - .:/var/www
-            - ./docker/nginx/nginx.conf/:/etc/nginx/conf.d/nginx.conf
+            - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
         depends_on:
             - app
+        networks:
+            - crm
+            - web-network
+
+    mysql:
+        image: mysql:8.0
+        container_name: mysql-crm
+        volumes:
+            - mysql_data:/var/lib/mysql
+        environment:
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
+            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+        restart: unless-stopped
+        networks:
+            - crm
 
     redis:
-        image: redis:latest
-        container_name: redis-paracord
-        command: redis-server --requirepass ${REDIS_PASSWORD}
-        ports:
-            - "6379:6379"
+        image: redis:alpine
+        container_name: redis-crm
+        volumes:
+            - redis_data:/data
+        environment:
+            - REDIS_PASSWORD=${REDIS_PASSWORD}
+        command: >
+            redis-server
+            --maxmemory 256mb
+            --maxmemory-policy allkeys-lru
+            --appendonly yes
+            --protected-mode yes
+        restart: unless-stopped
+        networks:
+            - crm
+
+networks:
+    crm:
+        driver: bridge
+    web-network:
+        external: true
+
+volumes:
+    mysql_data:
+    redis_data:
