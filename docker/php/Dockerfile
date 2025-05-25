@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip sodium intl opcache sockets
 
-COPY ./php.ini /usr/local/etc/php/conf.d/php.ini
+COPY ./docker/php/php.ini /usr/local/etc/php/conf.d/php.ini
 
 RUN { \
     echo '[www]'; \
