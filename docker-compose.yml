@@ -29,7 +29,11 @@ services:
             - redis
 
     scheduler:
-        build: .
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+            args:
+                - ENVIRONMENT=production
         container_name: cron-crm
         volumes:
             -   .:/var/www
