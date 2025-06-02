@@ -28,6 +28,21 @@ services:
             - mysql
             - redis
 
+    scheduler:
+        build: .
+        container_name: cron-crm
+        volumes:
+            -   .:/var/www
+        working_dir: /var/www
+        command: ["php", "/var/www/artisan", "schedule:work"]
+        networks:
+            - crm
+            - web-network
+        depends_on:
+            - app
+            - mysql
+            - redis
+
     webserver:
         image: nginx:stable-alpine
         container_name: webserver-crm
